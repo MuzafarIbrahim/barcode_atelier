@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Barcode Ateliar</title>
+    <link rel="stylesheet.css" href="style.css" />
+  </head>
+  <body>
+    <div class="Toolbar">
+      <button>New Code</button>
+      <button>Save</button>
+      <button>Export</button>
+    </div>
+
+    <div class="container">
+      <div class="left-panel">
+        <h3>Data</h3>
+        <textarea id="barcodeData"> </textarea>
+
+        <h3>Type</h3>
+        <select id="barcodeType">
+          <option>Code128</option>
+          <option>QR Code</option>
+        </select>
+      </div>
+
+      <div class="center-panel">
+        <div id="preview">Barcode Preview</div>
+      </div>
+
+      <div id="right-panel">
+        <h3>Size</h3>
+        <label>Width</label>
+        <input type="range" id="height" min="100" max="600" />
+
+        <label> height </label>
+        <input type="range" id="height" min="50" max="300" />
+
+        <h3>Colors</h3>
+        <input type="color" id="fgColor" />
+        <input type="color" id="bgColor" />
+      </div>
+    </div>
+    <script src="renderer.js"></script>
+  </body>
+</html>

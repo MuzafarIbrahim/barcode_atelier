@@ -1,0 +1,19 @@
+{
+  "name": "barcode-maker",
+  "version": "1.0.0",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "Muzafar Ibrahim",
+  "license": "ISC",
+  "description": "",
+  "devDependencies": {
+    "electron": "^41.2.1"
+  },
+  "dependencies": {
+    "jsbarcode": "^3.12.3"
+  }
+}
