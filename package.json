@@ -1,5 +1,5 @@
 {
-  "name": "barcode-maker",
+  "name": "barcode-atelier",
   "version": "1.0.0",
   "main": "main.js",
   "scripts": {
@@ -9,11 +9,12 @@
   "keywords": [],
   "author": "Muzafar Ibrahim",
   "license": "ISC",
-  "description": "",
+  "description": "A precision barcode generation tool",
   "devDependencies": {
     "electron": "^41.2.1"
   },
   "dependencies": {
-    "jsbarcode": "^3.12.3"
+    "jsbarcode": "^3.12.3",
+    "qrcode-generator": "^2.0.4"
   }
 }

@@ -1,47 +1,631 @@
 <!doctype html>
-<html lang="en">
+
+<html class="light" lang="en">
   <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Barcode Ateliar</title>
-    <link rel="stylesheet.css" href="style.css" />
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Barcode Atelier</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Space_Grotesk:wght@400;500;700&amp;display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+      rel="stylesheet"
+    />
+    <script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              error: "#9f403d",
+              "secondary-fixed": "#d5e3fc",
+              "on-primary": "#f8f7ff",
+              "error-container": "#fe8983",
+              "on-error": "#fff7f6",
+              "on-secondary-container": "#455367",
+              "tertiary-fixed": "#69f6b8",
+              "on-surface": "#2a3439",
+              "secondary-fixed-dim": "#c7d5ed",
+              "on-secondary-fixed": "#324053",
+              "primary-dim": "#004aba",
+              "surface-tint": "#0c56d0",
+              "on-secondary": "#f8f8ff",
+              "tertiary-dim": "#005f40",
+              "on-tertiary-container": "#005a3c",
+              "surface-container-highest": "#d9e4ea",
+              "inverse-surface": "#0b0f10",
+              "surface-dim": "#cfdce3",
+              "secondary-container": "#d5e3fc",
+              "on-primary-fixed": "#003993",
+              "primary-container": "#dae2ff",
+              "secondary-dim": "#465468",
+              "inverse-on-surface": "#9a9d9f",
+              "inverse-primary": "#5c8bff",
+              "surface-container-lowest": "#ffffff",
+              "primary-fixed-dim": "#c6d3ff",
+              "on-primary-fixed-variant": "#0253cd",
+              "tertiary-fixed-dim": "#58e7ab",
+              background: "#f7f9fb",
+              "error-dim": "#4e0309",
+              "surface-container-high": "#e1e9ee",
+              "on-primary-container": "#004ab9",
+              primary: "#0c56d0",
+              "surface-container": "#e8eff3",
+              "surface-container-low": "#f0f4f7",
+              "on-secondary-fixed-variant": "#4e5c71",
+              "on-surface-variant": "#566166",
+              "tertiary-container": "#69f6b8",
+              secondary: "#526074",
+              "on-tertiary-fixed-variant": "#006544",
+              "on-error-container": "#752121",
+              "surface-bright": "#f7f9fb",
+              "outline-variant": "#a9b4b9",
+              "surface-variant": "#d9e4ea",
+              surface: "#f7f9fb",
+              "on-background": "#2a3439",
+              outline: "#717c82",
+              "primary-fixed": "#dae2ff",
+              "on-tertiary": "#e6ffee",
+              "on-tertiary-fixed": "#00452d",
+              tertiary: "#006d4a",
+            },
+            borderRadius: {
+              DEFAULT: "0.125rem",
+              lg: "0.25rem",
+              xl: "0.5rem",
+              full: "0.75rem",
+            },
+            fontFamily: {
+              headline: ["Inter"],
+              body: ["Inter"],
+              label: ["Space Grotesk"],
+            },
+          },
+        },
+      };
+    </script>
+    <style>
+      body {
+        font-family: "Inter", sans-serif;
+      }
+      .material-symbols-outlined {
+        font-variation-settings:
+          "FILL" 0,
+          "wght" 400,
+          "GRAD" 0,
+          "opsz" 24;
+      }
+      .technical-label {
+        font-family: "Space Grotesk", sans-serif;
+        text-transform: none;
+      }
+      ::-webkit-scrollbar {
+        width: 4px;
+      }
+      ::-webkit-scrollbar-track {
+        background: transparent;
+      }
+      ::-webkit-scrollbar-thumb {
+        background: #d9e4ea;
+        border-radius: 10px;
+      }
+      .active-nav-rail {
+        border-right: 2px solid #0c56d0;
+      }
+    </style>
   </head>
-  <body>
-    <div class="Toolbar">
-      <button>New Code</button>
-      <button>Save</button>
-      <button>Export</button>
+  <body class="bg-surface text-on-surface flex h-screen overflow-hidden">
+    <!-- SideNavBar (Rail) -->
+    <aside
+      class="fixed left-0 top-0 h-full z-40 h-full w-20 flex flex-col bg-slate-100 dark:bg-slate-900"
+    >
+      <div class="flex flex-col items-center py-6 gap-8">
+        <div
+          class="text-lg font-bold tracking-tighter text-slate-900 dark:text-slate-100 flex flex-col items-center"
+        >
+          <span
+            class="material-symbols-outlined text-primary text-3xl"
+            style="font-variation-settings: &quot;FILL&quot; 1"
+            >barcode_scanner</span
+          >
+          <span
+            class="text-[8px] uppercase tracking-[0.2em] mt-1 text-on-surface-variant"
+            >Atelier</span
+          >
+        </div>
+        <nav class="flex flex-col gap-4 w-full">
+          <!-- Generator Tab (Active) -->
+          <button
+            class="flex flex-col items-center py-3 w-full text-blue-600 dark:text-blue-400 font-bold border-r-2 border-blue-600 hover:bg-slate-200 dark:hover:bg-slate-800 transition-colors active:scale-95 duration-150"
+          >
+            <span class="material-symbols-outlined">barcode_scanner</span>
+            <span class="technical-label text-[10px] mt-1 tracking-tight"
+              >Generator</span
+            >
+          </button>
+          <button
+            class="flex flex-col items-center py-3 w-full text-slate-500 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-800 transition-colors active:scale-95 duration-150"
+          >
+            <span class="material-symbols-outlined">inventory_2</span>
+            <span class="technical-label text-[10px] mt-1 tracking-tight"
+              >Inventory</span
+            >
+          </button>
+          <button
+            class="flex flex-col items-center py-3 w-full text-slate-500 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-800 transition-colors active:scale-95 duration-150"
+          >
+            <span class="material-symbols-outlined">history</span>
+            <span class="technical-label text-[10px] mt-1 tracking-tight"
+              >History</span
+            >
+          </button>
+          <button
+            class="flex flex-col items-center py-3 w-full text-slate-500 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-800 transition-colors active:scale-95 duration-150"
+          >
+            <span class="material-symbols-outlined">settings</span>
+            <span class="technical-label text-[10px] mt-1 tracking-tight"
+              >Settings</span
+            >
+          </button>
+        </nav>
+      </div>
+      <div class="mt-auto flex flex-col items-center pb-12 gap-4">
+        <div
+          class="w-8 h-8 rounded-full bg-surface-container-highest flex items-center justify-center"
+        >
+          <span class="material-symbols-outlined text-sm">help</span>
+        </div>
+      </div>
+    </aside>
+    <div class="flex-1 ml-20 flex flex-col">
+      <!-- TopNavBar -->
+      <header
+        class="flex justify-between items-center w-full px-6 py-3 bg-white dark:bg-slate-950 shadow-sm dark:shadow-none z-30"
+      >
+        <div class="flex items-center gap-8">
+          <h1
+            class="font-['Space_Grotesk'] font-bold text-xl text-slate-900 dark:text-slate-100"
+          >
+            Barcode Atelier
+          </h1>
+          <nav class="flex gap-6">
+            <a
+              class="font-['Inter'] font-medium text-sm text-blue-600 dark:text-blue-400 border-b-2 border-blue-600 pb-1 hover:text-blue-500 transition-all"
+              href="#"
+              >New</a
+            >
+            <a
+              class="font-['Inter'] font-medium text-sm text-slate-600 dark:text-slate-400 hover:text-blue-500 transition-all"
+              href="#"
+              >Open</a
+            >
+            <a
+              class="font-['Inter'] font-medium text-sm text-slate-600 dark:text-slate-400 hover:text-blue-500 transition-all"
+              href="#"
+              >Save</a
+            >
+            <div class="relative group">
+              <button
+                class="font-['Inter'] font-medium text-sm text-slate-600 dark:text-slate-400 hover:text-blue-500 flex items-center gap-1 py-1"
+              >
+                Export
+                <span class="material-symbols-outlined text-xs"
+                  >expand_more</span
+                >
+              </button>
+              <div
+                class="absolute left-0 mt-0 w-32 bg-white dark:bg-slate-950 shadow-lg border border-slate-100 dark:border-slate-800 rounded-lg py-1 z-50 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200"
+              >
+                <a
+                  onclick="exportPNG()"
+                  class="block px-4 py-2 font-['Inter'] font-medium text-sm text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-blue-500 transition-colors"
+                  href="#"
+                  >PNG</a
+                >
+                <a
+                  onclick="exportSVG()"
+                  class="block px-4 py-2 font-['Inter'] font-medium text-sm text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-blue-500 transition-colors"
+                  href="#"
+                  >SVG</a
+                >
+                <a
+                  onclick="exportPDF()"
+                  class="block px-4 py-2 font-['Inter'] font-medium text-sm text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-blue-500 transition-colors"
+                  href="#"
+                  >PDF</a
+                >
+                <a
+                  class="block px-4 py-2 font-['Inter'] font-medium text-sm text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-blue-500 transition-colors"
+                  href="#"
+                  >CSV</a
+                >
+              </div>
+            </div>
+          </nav>
+        </div>
+        <div class="flex items-center gap-4">
+          <div
+            class="bg-surface-container px-3 py-1.5 rounded-lg flex items-center gap-2"
+          >
+            <span
+              class="material-symbols-outlined text-on-surface-variant text-sm"
+              >search</span
+            >
+            <input
+              class="bg-transparent border-none focus:ring-0 text-sm w-48 technical-label"
+              placeholder="Search templates..."
+              type="text"
+            />
+          </div>
+          <div class="flex gap-2">
+            <button
+              class="p-2 text-on-surface-variant hover:text-primary transition-colors"
+            >
+              <span class="material-symbols-outlined">print</span>
+            </button>
+            <button
+              class="p-2 text-on-surface-variant hover:text-primary transition-colors"
+            >
+              <span class="material-symbols-outlined">restart_alt</span>
+            </button>
+            <button
+              class="p-2 text-on-surface-variant hover:text-primary transition-colors"
+            >
+              <span class="material-symbols-outlined">account_circle</span>
+            </button>
+          </div>
+        </div>
+      </header>
+      <!-- Main Workspace -->
+      <main class="flex-1 flex overflow-hidden p-4 gap-4">
+        <!-- LeftPanel: Barcode Data & Type -->
+        <section
+          class="w-1/5 bg-surface-container-low rounded-xl flex flex-col p-4 overflow-y-auto"
+        >
+          <div class="space-y-6">
+            <div>
+              <label
+                class="technical-label text-[10px] uppercase font-bold text-on-surface-variant mb-2 block"
+                >Barcode Data</label
+              >
+              <textarea
+                id="barcode-data"
+                class="w-full bg-surface-container-highest border-none rounded-lg p-3 text-sm focus:ring-1 focus:ring-primary h-32 technical-label"
+                placeholder="Enter barcode content..."
+              >
+SKU-99283-ATELIER-01</textarea
+              >
+            </div>
+            <div>
+              <label
+                class="technical-label text-[10px] uppercase font-bold text-on-surface-variant mb-2 block"
+                >Barcode Type</label
+              >
+              <select
+                id="barcode-type"
+                class="w-full bg-surface-container-highest border-none rounded-lg p-2.5 text-sm focus:ring-1 focus:ring-primary technical-label"
+              >
+                <option>Code128</option>
+                <option>QR Code</option>
+                <option>EAN-13</option>
+                <option>UPC-A</option>
+                <option>DataMatrix</option>
+              </select>
+            </div>
+            <div class="pt-4 border-t border-outline-variant/10">
+              <label
+                class="technical-label text-[10px] uppercase font-bold text-on-surface-variant mb-2 block"
+                >Template Profile</label
+              >
+              <div class="flex gap-2">
+                <select
+                  class="flex-1 bg-surface-container-highest border-none rounded-lg p-2.5 text-sm focus:ring-1 focus:ring-primary technical-label"
+                >
+                  <option>Standard Retail</option>
+                  <option>Inventory Small</option>
+                  <option>Warehouse Large</option>
+                </select>
+                <button
+                  class="bg-surface-container-highest p-2.5 rounded-lg hover:bg-surface-container-high transition-colors"
+                >
+                  <span class="material-symbols-outlined text-sm">save</span>
+                </button>
+              </div>
+            </div>
+            <button
+              id="generate-btn"
+              class="w-full bg-gradient-to-b from-primary to-primary-dim text-white py-3 rounded-lg font-bold technical-label shadow-lg flex items-center justify-center gap-2 mt-4"
+            >
+              <span class="material-symbols-outlined text-sm">bolt</span>
+              GENERATE BARCODE
+            </button>
+          </div>
+        </section>
+        <!-- CenterPreviewPanel -->
+        <section
+          class="flex-1 bg-surface-container-lowest rounded-xl flex flex-col relative overflow-hidden group"
+        >
+          <div
+            class="absolute top-4 left-1/2 -translate-x-1/2 z-10 flex items-center gap-3 bg-surface-container/80 backdrop-blur-md px-4 py-2 rounded-full shadow-sm border border-outline-variant/10"
+          >
+            <button class="p-1 hover:text-primary transition-colors">
+              <span class="material-symbols-outlined text-lg">zoom_out</span>
+            </button>
+            <span class="technical-label text-xs font-bold w-12 text-center"
+              >100%</span
+            >
+            <button class="p-1 hover:text-primary transition-colors">
+              <span class="material-symbols-outlined text-lg">zoom_in</span>
+            </button>
+            <div class="w-[1px] h-4 bg-outline-variant/30 mx-1"></div>
+            <button class="p-1 hover:text-primary transition-colors">
+              <span class="material-symbols-outlined text-lg">refresh</span>
+            </button>
+          </div>
+          <div
+            class="flex-1 flex items-center justify-center p-12 overflow-auto"
+          >
+            <div
+              class="p-12 bg-white shadow-2xl rounded-sm border border-slate-100 flex flex-col items-center"
+            >
+              <div
+                id="preview-container"
+                class="flex flex-col items-center justify-center"
+              ></div>
+              <div
+                id="barcode-data"
+                class="mt-4 technical-label text-xs tracking-[0.5em] font-medium text-slate-900"
+              ></div>
+            </div>
+          </div>
+          <div class="absolute bottom-4 right-4 flex gap-2">
+            <button
+              class="bg-surface-container-highest/90 backdrop-blur px-3 py-1.5 rounded-lg text-[10px] technical-label font-bold text-on-surface-variant flex items-center gap-2"
+            >
+              <span class="material-symbols-outlined text-xs"
+                >aspect_ratio</span
+              >
+              1:1 FIT
+            </button>
+          </div>
+        </section>
+        <!-- RightPanel: Size, Layout & Settings -->
+        <section
+          class="w-1/4 bg-surface-container-low rounded-xl flex flex-col p-4 overflow-y-auto"
+        >
+          <div class="space-y-8">
+            <!-- Size & Layout -->
+            <section>
+              <h3
+                class="technical-label text-[11px] font-bold text-primary mb-4 flex items-center gap-2"
+              >
+                <span class="material-symbols-outlined text-sm"
+                  >straighten</span
+                >
+                SIZE &amp; LAYOUT
+              </h3>
+              <div class="space-y-4">
+                <div>
+                  <div class="flex justify-between mb-2">
+                    <label
+                      class="technical-label text-[10px] text-on-surface-variant uppercase"
+                      >Width (mm)</label
+                    >
+                    <span
+                      id="width-value"
+                      class="technical-label text-[10px] font-bold"
+                      >3</span
+                    >
+                  </div>
+                  <input
+                    id="width-slider"
+                    class="w-full accent-primary h-1 bg-surface-container-highest rounded-full appearance-none"
+                    type="range"
+                    min="1"
+                    max="10"
+                    value="3"
+                    step="0.5"
+                  />
+                </div>
+                <div>
+                  <div class="flex justify-between mb-2">
+                    <label
+                      class="technical-label text-[10px] text-on-surface-variant uppercase"
+                      >Height (mm)</label
+                    >
+                    <span
+                      id="height-value"
+                      class="technical-label text-[10px] font-bold"
+                      >120</span
+                    >
+                  </div>
+                  <input
+                    id="height-slider"
+                    class="w-full accent-primary h-1 bg-surface-container-highest rounded-full appearance-none"
+                    type="range"
+                    min="20"
+                    max="300"
+                    value="120"
+                    step="10"
+                  />
+                </div>
+              </div>
+            </section>
+            <!-- Colors -->
+            <section>
+              <h3
+                class="technical-label text-[11px] font-bold text-primary mb-4 flex items-center gap-2"
+              >
+                <span class="material-symbols-outlined text-sm">palette</span>
+                COLOR PALETTE
+              </h3>
+              <div class="grid grid-cols-2 gap-3">
+                <button
+                  id="fg-btn"
+                  class="bg-surface-container-highest p-2 rounded-lg flex items-center gap-2 border border-outline-variant/10"
+                >
+                  <div
+                    id="fg-swatch"
+                    class="w-4 h-4 rounded-sm bg-slate-900 shadow-inner"
+                  ></div>
+                  <span class="technical-label text-[10px] font-medium"
+                    >Foreground</span
+                  >
+                </button>
+                <input
+                  id="fg-color"
+                  type="color"
+                  value="#2a3439"
+                  style="display: none"
+                />
+                <button
+                  id="bg-btn"
+                  class="bg-surface-container-highest p-2 rounded-lg flex items-center gap-2 border border-outline-variant/10"
+                >
+                  <div
+                    id="bg-swatch"
+                    class="w-4 h-4 rounded-sm bg-white shadow-inner border border-outline-variant/10"
+                  ></div>
+                  <span class="technical-label text-[10px] font-medium"
+                    >Background</span
+                  >
+                </button>
+                <input
+                  id="bg-color"
+                  type="color"
+                  value="#ffffff"
+                  style="display: none"
+                />
+              </div>
+            </section>
+            <!-- Text Options -->
+            <section>
+              <h3
+                class="technical-label text-[11px] font-bold text-primary mb-4 flex items-center gap-2"
+              >
+                <span class="material-symbols-outlined text-sm">title</span>
+                TEXT RENDERING
+              </h3>
+              <div class="space-y-4">
+                <label class="flex items-center gap-3 group cursor-pointer">
+                  <input
+                    id="show-text"
+                    checked=""
+                    class="rounded-sm border-outline-variant text-primary focus:ring-primary bg-surface-container-highest"
+                    type="checkbox"
+                  />
+                  <span class="technical-label text-xs"
+                    >Display Human Readable</span
+                  >
+                </label>
+                <div class="grid grid-cols-2 gap-2">
+                  <select
+                    class="bg-surface-container-highest border-none rounded-lg p-2 text-xs technical-label"
+                  >
+                    <option>Inter</option>
+                    <option>Space Grotesk</option>
+                    <option>JetBrains Mono</option>
+                  </select>
+                  <select
+                    class="bg-surface-container-highest border-none rounded-lg p-2 text-xs technical-label"
+                  >
+                    <option>10pt</option>
+                    <option>12pt</option>
+                    <option>14pt</option>
+                  </select>
+                </div>
+              </div>
+            </section>
+            <!-- Advanced Settings -->
+            <section class="pt-4 border-t border-outline-variant/10">
+              <h3
+                class="technical-label text-[11px] font-bold text-on-surface-variant mb-4"
+              >
+                ADVANCED CORE
+              </h3>
+              <div class="space-y-4">
+                <div>
+                  <label
+                    class="technical-label text-[10px] uppercase text-on-surface-variant block mb-2"
+                    >Error Correction</label
+                  >
+                  <div
+                    class="flex gap-1 p-1 bg-surface-container-highest rounded-lg"
+                  >
+                    <button
+                      class="flex-1 py-1 text-[10px] font-bold bg-white rounded shadow-sm"
+                    >
+                      LOW
+                    </button>
+                    <button
+                      class="flex-1 py-1 text-[10px] font-bold text-on-surface-variant hover:bg-white/50 transition-colors"
+                    >
+                      MED
+                    </button>
+                    <button
+                      class="flex-1 py-1 text-[10px] font-bold text-on-surface-variant hover:bg-white/50 transition-colors"
+                    >
+                      HIGH
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </section>
+          </div>
+        </section>
+      </main>
+      <!-- Footer / StatusBar -->
+      <footer
+        class="fixed bottom-0 left-0 w-full px-4 flex justify-between items-center z-50 ml-20 bg-slate-50 dark:bg-slate-900 h-8"
+      >
+        <div class="flex items-center gap-6">
+          <div class="flex items-center gap-2">
+            <div class="w-2 h-2 rounded-full bg-tertiary"></div>
+            <span
+              class="font-['Space_Grotesk'] text-[10px] uppercase tracking-widest text-slate-400"
+              >Status: Ready</span
+            >
+          </div>
+          <span
+            id="status-type"
+            class="font-['Space_Grotesk'] text-[10px] uppercase tracking-widest text-slate-400"
+            >Type: Code128</span
+          >
+          <span
+            id="status-dimensions"
+            class="font-['Space_Grotesk'] text-[10px] uppercase tracking-widest text-slate-400"
+            >Dimensions: 300 x 150 px</span
+          >
+        </div>
+        <div class="flex items-center gap-6">
+          <span
+            class="font-['Space_Grotesk'] text-[10px] uppercase tracking-widest text-emerald-600 dark:text-emerald-400"
+            >Engine: v2.4.1</span
+          >
+          <div class="flex gap-4">
+            <a
+              class="font-['Space_Grotesk'] text-[10px] uppercase tracking-widest text-slate-400 hover:text-slate-900 transition-colors"
+              href="#"
+              >Documentation</a
+            >
+            <a
+              class="font-['Space_Grotesk'] text-[10px] uppercase tracking-widest text-slate-400 hover:text-slate-900 transition-colors"
+              href="#"
+              >Support</a
+            >
+          </div>
+        </div>
+      </footer>
     </div>
-
-    <div class="container">
-      <div class="left-panel">
-        <h3>Data</h3>
-        <textarea id="barcodeData"> </textarea>
-
-        <h3>Type</h3>
-        <select id="barcodeType">
-          <option>Code128</option>
-          <option>QR Code</option>
-        </select>
-      </div>
-
-      <div class="center-panel">
-        <div id="preview">Barcode Preview</div>
-      </div>
-
-      <div id="right-panel">
-        <h3>Size</h3>
-        <label>Width</label>
-        <input type="range" id="height" min="100" max="600" />
-
-        <label> height </label>
-        <input type="range" id="height" min="50" max="300" />
-
-        <h3>Colors</h3>
-        <input type="color" id="fgColor" />
-        <input type="color" id="bgColor" />
-      </div>
-    </div>
+    <script src="node_modules/jsbarcode/dist/JsBarcode.all.min.js"></script>
+    <script src="node_modules/qrcode-generator/dist/qrcode.js"></script>
     <script src="renderer.js"></script>
   </body>
 </html>
