@@ -203,6 +203,35 @@ bgColor.addEventListener('input',  ()=> {
     generateBarcode()
 })
 
+document.addEventListener('keydown', (event) => {
+  const  cmdOrctrl  = event.metaKey || event.ctrlKey
+
+  if(cmdOrctrl  && event.key.toLowerCase() === 'g'){
+    event.preventDefault()
+    generateBarcode()
+  }
+
+  if(cmdOrctrl &&  event.key.toLowerCase() ==='e'){
+    event.preventDefault()
+    exportPNG()
+  }
+
+  if(cmdOrctrl  && event.shiftKey &&  event.key.toLowerCase() === 'e'){
+    event.preventDefault()
+    exportSVG()
+  }
+
+  if(cmdOrctrl && event.key.toLowerCase()==='p'){
+    event.preventDefault()
+    exportPDF()
+  }
+
+  if(cmdOrctrl && event.shiftKey && event.key.toLowerCase() === 'c'){
+    event.preventDefault()
+    statusType.textContent = 'Clipboard support coming soon...'
+  }
+})
+
 
 function  getCurrentCanvas(){
     return  previewContainer.querySelector('canvas')
@@ -336,19 +365,65 @@ async function exportSVG() {
 }
 
 async function exportPDF() {
-    const  canvas = getCurrentCanvas()
+    const  type = barcodeTypeSelect.value
+    const data = barcodeDataInput.value.trim()
 
-    if(!canvas){
+    if(!data){
         alert('Please  generate a barcode first')
         return
     }
 
-    const result  =  await window.api.exportPDF()
+    const exportCanvas = document.createElement('canvas')
+      if(type  === 'QR Code'){
+        const qr = qrcode(0, 'M')
+        qr.addData(data)
+        qr.make()
+
+        const cellSize = 12
+        const margin = 40
+        const count  = qr.getModuleCount()
+
+        exportCanvas.width  = count * cellSize + margin * 2
+    exportCanvas.height = count * cellSize + margin * 2
+
+    const ctx = exportCanvas.getContext('2d')
+    ctx.fillStyle = bgColor.value
+    ctx.fillRect(0, 0, exportCanvas.width, exportCanvas.height)
+    ctx.fillStyle = fgColor.value
+
+    for (let row = 0; row < count; row++) {
+      for (let col = 0; col < count; col++) {
+        if (qr.isDark(row, col)) {
+          ctx.fillRect(
+            col * cellSize + margin,
+            row * cellSize + margin,
+            cellSize, cellSize
+          )
+        }
+      }
+    }
+  } else {
+    const formatMap = { 'Code128': 'CODE128', 'EAN-13': 'EAN13', 'UPC-A': 'UPC' }
+    const format    = formatMap[type] || 'CODE128'
+    const scale     = 4
+
+    JsBarcode(exportCanvas, data, {
+      format      : format,
+      lineColor   : fgColor.value,
+      background  : bgColor.value,
+      width       : widthSlider.value * scale,
+      height      : heightSlider.value * scale,
+      displayValue: showText.checked,
+      font        : 'Space Grotesk',
+      fontSize    : 16 * scale,
+      margin      : 24 * scale
+    })
+  }
+    const imageData = exportCanvas.toDataURL('image/png')
+    const result  =  await window.api.exportPDF({imageData})
 
     if(result.success){
         statusType.textContent = `Saved  to ${result.filePath}`
     }
-}
-
-
+  }
 generateBarcode()
